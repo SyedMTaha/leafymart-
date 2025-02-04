@@ -11,7 +11,7 @@ const parseCost = (cost) => {
 const CartItem = ({ onContinueShopping }) => {
   const dispatch = useDispatch();
 
-  // ✅ Get cart items from Redux store
+  
   const cartItems = useSelector((state) => state.cart.items) || [];
 
   const calculateTotalAmount = () => {
@@ -65,7 +65,7 @@ const CartItem = ({ onContinueShopping }) => {
           Continue Shopping
         </button>
         <br />
-        <button className="btn2">Checkout</button>
+        <button className="btn2" onClick={() => alert("🚀 Checkout feature coming soon!")}> Checkout </button>
       </div>
     </div>
   );
