@@ -261,6 +261,7 @@ const handleContinueShopping = (e) => {
 
   
 const handleAddToCart = (plant) => {
+        console.log("Adding to cart:", plant);
         dispatch(addItem(plant));
 };
 

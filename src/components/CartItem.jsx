@@ -1,26 +1,30 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { removeItem, updateQuantity } from './CartSlice';
-import './CartItem.css';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { removeItem, updateQuantity } from "./CartSlice";
+import "./CartItem.css";
 
 const parseCost = (cost) => {
-  const parsed = parseFloat(cost.replace(/[^0-9.]/g, ''));
+  const parsed = parseFloat(cost.replace(/[^0-9.]/g, ""));
   return isNaN(parsed) ? 0 : parsed;
 };
 
-const CartItem = ({ cartItems = [], onContinueShopping }) => {
+const CartItem = ({ onContinueShopping }) => {
   const dispatch = useDispatch();
 
+  // ✅ Get cart items from Redux store
+  const cartItems = useSelector((state) => state.cart.items) || [];
+
   const calculateTotalAmount = () => {
-    if (!Array.isArray(cartItems)) return "0.00"; // Ensure cartItems is an array
-    return cartItems.reduce((total, item) => total + item.quantity * parseCost(item.cost), 0).toFixed(2);
+    return cartItems
+      .reduce((total, item) => total + item.quantity * parseCost(item.cost), 0)
+      .toFixed(2);
   };
 
   return (
     <div className="cart-container">
-      <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
+      <h2 style={{ color: "black" }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
       <div>
-        {Array.isArray(cartItems) && cartItems.length > 0 ? (
+        {cartItems.length > 0 ? (
           cartItems.map((item) => (
             <div className="cart-item" key={item.name}>
               <img className="cart-item-image" src={item.image} alt={item.name} />
@@ -46,10 +50,7 @@ const CartItem = ({ cartItems = [], onContinueShopping }) => {
                 <div className="cart-item-total">
                   Total: ${(item.quantity * parseCost(item.cost)).toFixed(2)}
                 </div>
-                <button
-                  className="cart-item-delete"
-                  onClick={() => dispatch(removeItem(item.name))}
-                >
+                <button className="cart-item-delete" onClick={() => dispatch(removeItem(item.name))}>
                   Delete
                 </button>
               </div>
